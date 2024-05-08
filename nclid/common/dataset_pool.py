@@ -64,6 +64,7 @@ class DatasetPool:
             "ca-CondMat-undirected": "label",
             "ca-GrQc-undirected": "label",
             "ca-HepPh-undirected": "label",
+            "ca-HepTh-undirected": "label",
             "cit-HepPh": "label",
             "cit-HepTh": "label",
             "facebook-ego-undirected": "label",
@@ -133,7 +134,7 @@ class DatasetPool:
                     if not name in graphs:
                         graphs[name] = nx.barabasi_albert_graph(n, k)
         for g in graphs:
-            csr = scipy.sparse.csr_matrix(nx.to_scipy_sparse_matrix(graphs[g]))
+            csr = scipy.sparse.csr_matrix(nx.to_scipy_sparse_array(graphs[g]))
             np.savez(
                 os.path.join(out, g + ".npz"),
                 adj_data=csr.data,

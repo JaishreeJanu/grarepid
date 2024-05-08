@@ -86,7 +86,7 @@ def load_npz(path, label="label", to_dense=False, undirectedGraph=False):
         #     (loader["attr_data"], loader["attr_indices"], loader["attr_indptr"]),
         #     shape=loader["attr_shape"],
         # )
-        nx_graph = nx.from_scipy_sparse_matrix(
+        nx_graph = nx.from_scipy_sparse_array(
             adj_matrix, create_using=nx.DiGraph if not undirectedGraph else nx.Graph
         )
         # get labels first
