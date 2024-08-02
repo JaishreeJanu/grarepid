@@ -1,15 +1,14 @@
+"""
+Desc: the script to generate SBM (Stochastic Block Model) networkx graphs
+"""
+
+
 import networkx as nx
 import matplotlib.pyplot as plt
 from torch_geometric.utils.convert import from_networkx
 from torch_geometric.data import Data
 import numpy as np
 import torch
-
-num_of_nodes = 14
-num_of_feats = 14
-adj = np.random.randint(0, 2, [num_of_nodes, num_of_nodes])
-feats = np.random.uniform(-1, 1, [num_of_nodes, num_of_feats])
-
 
 def numpy_to_graph(A, node_features=None):
     G = nx.from_numpy_array(A)
@@ -19,13 +18,18 @@ def numpy_to_graph(A, node_features=None):
                 G.nodes[n][k] = v[n]
     return G
 
+num_of_nodes = 14
+num_of_feats = 14
+adj = np.random.randint(0, 2, [num_of_nodes, num_of_nodes])
+feats = np.random.uniform(-1, 1, [num_of_nodes, num_of_feats])
+
 G  = numpy_to_graph(adj, node_features={'x': feats})
 
 # data = Data()
 # data.edge_index = torch.from_numpy(adj).nonzero().t()
 # data.x = torch.from_numpy(feats)
 
-
+##########################################################################################
 # Stochastic Block Model
 def generate_sbm(sizes, p_matrix):
     """
