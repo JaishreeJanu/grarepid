@@ -4,26 +4,23 @@ from subprocess import run
 #          "ogbn-arxiv", "ogbn-products",
 #          "ogbn-mag"]
 
-datasets = ['ca-AstroPh-undirected', 'blog-catalog-undirected', 'ca-CondMat-undirected', 'ca-GrQc-undirected', 'ca-HepPh-undirected',
-                    'ca-HepTh-undirected',
-                    'cit-HepPh',
-                    'cit-HepTh', 'facebook-ego-undirected', 'facebook-wall', 'flickr-undirected', 'ppi',
-                    "cora_ml",
-                    "citeseer",
-                    "amazon_electronics_photo",
-                    "amazon_electronics_computers",
-                    "pubmed",
-                    "cora",
-                    "dblp"]  #'youtube-undirected'
+# datasets = ["PubMed", "Cora", "CiteSeer"]  ## PLANETOID
+# datasets = ["Computers", "Photo"]  ## AMAZON
+
+# datasets = ["Cora", "Cora_ML", "DBLP", "CiteSeer", "PubMed"]  ## CitationFull
+
+# datasets = ["MUTAG", "ENZYMES", "PROTEINS"] # ] ## TUDataset
+# datasets = ["Mutagenicity", "AIDS", "Tox21_ARE"] ## TUDataset
+datasets = ["SYNTHETIC", "MSRC_9", "MSRC_21", "MSRC_21C", "Fingerprint", "FIRSTMM_DB", "mit_ct1", "mit_ct2",
+            "Mutagenicity", "AIDS", "Tox21_ARE", "TWITTER-Real-Graph-Partial"]
 
 
 num_samples = 100000
 pools = 15
 
 for name in datasets:
-    run(["python3", "intrinsic_dimension_k_hops_convert_data.py",
+    run(["python3", "intrinsic_dimension_k_hops.py",
          "--name", name,
          "--pools", str(pools),
-         "--num_samples", str(num_samples),
-         "--datapath", '../data/'])
+         "--num_samples", str(num_samples)])
     
