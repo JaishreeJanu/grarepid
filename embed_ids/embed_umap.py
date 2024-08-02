@@ -1,5 +1,5 @@
 import plotly.express as px
-import embed_umap.umap_ as umap
+import umap
 import numpy as np
 import numpy as np
 from sklearn.datasets import load_digits
@@ -8,7 +8,8 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 
-X = np.load('../embeddings/sage_embeddings/Photo_embeddings.npy')
+X = np.load('../embeddings/gat_embeddings/CiteSeer_embeddings.npy')
+print(X.shape)
 
 reducer = umap.UMAP()
 scaled_penguin_data = StandardScaler().fit_transform(X)
