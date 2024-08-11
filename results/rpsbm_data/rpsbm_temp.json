@@ -1,0 +1,1 @@
+{"graph":{"250":"rpsbm_torch_250"},"num_nodes":{"250":3000},"num_edges":{"250":4958},"node_features":{"250":9},"num_classes":{"250":10},"num_nodes_per_class":{"250":300},"node_homophily_ratio":{"250":0.033},"avg_degree":{"250":1.6},"degree_cent":{"250":0.0011021452},"close_cent":{"250":0.033721311},"between_cent":{"250":0.0017821214},"load_cent":{"250":0.0017821214}}
