@@ -6,59 +6,97 @@ from torch_geometric.utils.convert import to_networkx
 import networkx as nx
 import matplotlib.pyplot as plt
 from statistics import mean
+import numpy as np
 
 from graph_visualizations import plot_in_out_degree_distributions, plot_igraph
 
-plt.close('all')
+num_blocks = int(sys.argv[1])  # num of blocks/ clusters
+num_channels = int(sys.argv[2])  # num of node features
+num_graphs = 15
 
-# num_blocks = int(sys.argv[1])  # num of blocks/ clusters
-# num_channels = int(sys.argv[1])  # num of node features
-# num_classes = 5
-# num_graphs = 10
+with open ('./sbm_graphs_meta.json', 'r') as fp:
+    sbm_graphs_meta = json.load(fp)
+for ith_graph in range(num_graphs):
+    block_sizes = torch.LongTensor(num_blocks).random_(6,80)
+    print(block_sizes)
 
-# for ith_graph in range(num_graphs):
-#     block_sizes = torch.LongTensor(num_blocks).random_(6,40)
-#     print(block_sizes)
-#     # random_matrix = torch.rand(num_blocks, num_blocks).float()  ## generates values between 0 and 1
-#     #
-#     # edge_probs = random_matrix.triu() + random_matrix.triu(1).transpose(0, 1)  ## symmetric matrix
-#
-#     edge_probs = [
-#         [0.15, 0.001, 0.004, 0.002, 0.0015, 0.0022, 0.001, 0.0013],
-#         [0.001, 0.19, 0.009, 0.0025, 0.003, 0.0014, 0.0031, 0.001],
-#         [0.004, 0.009, 0.16, 0.0031, 0.0016, 0.0041, 0.0012, 0.0017],
-#         [0.002, 0.0025, 0.0031, 0.18, 0.0011, 0.0015, 0.0011, 0.0018],
-#         [0.0015, 0.003 , 0.0016, 0.0011, 0.99, 0.0021, 0.0022, 0.0051],
-#         [0.0022, 0.0014, 0.0041, 0.0015, 0.0021, 0.21, 0.0014, 0.005],
-#         [0.001, 0.0031, 0.0012, 0.0011, 0.0022, 0.0014, 0.12, 0.0041],
-#         [0.0013, 0.001, 0.0017, 0.0018, 0.0051, 0.005, 0.0041, 0.151],
-#     ]
-#     edge_probs = [row[:4] for row in edge_probs[:4]]
-#     print(edge_probs)
-#     sbm_torch = StochasticBlockModelDataset(root='./', num_graphs=1,  block_sizes=block_sizes, edge_probs=edge_probs,
-#                                             num_channels=num_channels, is_undirected=False)
-#
-#     sbm_torch = sbm_torch[0]
-#     sbm_torch.num_classes = num_classes  ## need to add num_classes for Embedding algorithms
-#
-#     class_colors = {0: 'red', 1: 'blue', 2: 'green', 3: 'yellow', 4: 'orange', 5: 'black'}
-#
-#     nx_random_sbm = to_networkx(sbm_torch, node_attrs=['x', 'y'], to_undirected=False)
-#     node_colors = [class_colors[data['y']] for _, data in nx_random_sbm.nodes(data=True)]
-#     nx.draw(nx_random_sbm, node_color=node_colors, with_labels=True, edge_color='gray')
-#     plt.savefig('torch_sbm.png', format='png')
-    # torch.save(sbm_torch, f'../random_graphs/sbm_torch_{ith_graph}_{num_blocks}_{num_channels}_{num_classes}')
+    edge_probs = [
+        [0.25, 0.001, 0.04, 0.0006, 0.0015, 0.0022, 0.001, 0.013, 0.05, 0.0077, 0.0019, 0.00099],
+        [0.001, 0.39, 0.00099, 0.0025, 0.03, 0.0414, 0.0031, 0.001, 0.066, 0.0081, 0.00033, 0.0045],
+        [0.04, 0.00099, 0.62, 0.0031, 0.0016, 0.0041, 0.0012, 0.017, 0.06, 0.0025, 0.00089, 0.0055],
+        [0.0006, 0.0025, 0.0031, 0.84, 0.011, 0.0015, 0.0011, 0.0018, 0.0091, 0.000189, 0.0044, 0.0084],
+        [0.0015, 0.03 , 0.0016, 0.011, 0.99, 0.0021, 0.0022, 0.0051, 0.0048, 0.0052, 0.00038, 0.0029],
+        [0.0022, 0.0414, 0.0041, 0.0015, 0.0021, 0.214, 0.0014, 0.005, 0.025, 0.0065, 0.00028, 0.0063],
+        [0.001, 0.0031, 0.0012, 0.0011, 0.0022, 0.0014, 0.332, 0.0041, 0.00066, 0.0019, 0.0035, 0.088],
+        [0.013, 0.001, 0.017, 0.0018, 0.0051, 0.005, 0.0041, 0.151, 0.0044, 0.0078, 0.034, 0.00094],
+        [0.05, 0.066, 0.06, 0.0091, 0.0048, 0.025, 0.00066, 0.0044, 0.178, 0.00543, 0.0067, 0.014],
+        [0.0077, 0.0081, 0.0025, 0.000189, 0.0052, 0.0065, 0.0019, 0.0078, 0.00543, 0.65, 0.000321,  0.0093],
+        [0.0019, 0.00033, 0.00089, 0.0044, 0.00038, 0.00028, 0.0035, 0.034, 0.0067, 0.000321, 0.345, 0.00511],
+        [0.00099, 0.0045, 0.0055, 0.0084, 0.0029, 0.0063, 0.088, 0.00094, 0.014, 0.0093, 0.00511, 0.444]
+    ]
+    # check_edges = np.array(edge_probs)
+    # print(np.array_equal(check_edges, check_edges.T))
+    # num_rows = len(edge_probs)
+    # num_cols = len(edge_probs[0])
+    # print(num_rows == num_cols)
+    # for i in range((num_rows)):
+    #     for j in range(num_cols):
+    #         if edge_probs[i][j] != edge_probs[j][i]:
+    #             print(i, j, edge_probs[i][j], edge_probs[j][i])
     #
-    # sbm_torch = to_networkx(sbm_torch)
-    # nx.draw(sbm_torch, with_labels=True, node_color='blue', edge_color='gray')
-    # plt.savefig(f'./graph_plots/sbm_torch_{ith_graph}_{num_blocks}_{num_channels}_{num_classes}.png', format='png')
-    # plt.clf()
+    # sys.exit(1)   # [row[:num_blocks] for row in edge_probs[:num_blocks]]
+    edge_probs = [row[-num_blocks:] for row in edge_probs[-num_blocks:]]  ##  [row[-2:] for row in ll[-2:]]
+    sbm_torch = StochasticBlockModelDataset(root='./', num_graphs=1,  block_sizes=block_sizes, edge_probs=edge_probs,
+                                            num_channels=num_channels, is_undirected=True)
+
+    sbm_torch = sbm_torch[0]
+    sbm_torch.num_classes = num_blocks
+    torch.save(sbm_torch, f'../random_graphs/sbm_torch_{ith_graph}_{num_blocks}_{num_channels}')
+
+    num_of_nodes = sbm_torch.x.size(0)
+    plot_in_out_degree_distributions(sbm_torch.edge_index, num_of_nodes,
+                                     f'sbm_torch_{ith_graph}_{num_blocks}_{num_channels}')
+    plot_igraph(sbm_torch, dataset_name=f'sbm_torch_{ith_graph}_{num_blocks}_{num_channels}')
+
+    class_colors = {0: 'red', 1: 'blue', 2: 'green', 3: 'brown', 4: 'orange', 5: 'gray',
+                               6: 'purple', 7: 'pink', 8: 'olive', 9: 'cyan', 10: 'maroon', 11: 'magenta'}
+
+    nx_random_sbm = to_networkx(sbm_torch, node_attrs=['x', 'y'], to_undirected=False)
+    node_colors = [class_colors[data['y']] for _, data in nx_random_sbm.nodes(data=True)]
+    nx.draw(nx_random_sbm, node_color=node_colors, with_labels=True, edge_color='gray')
+
+    degree_cent = nx.degree_centrality(nx_random_sbm)
+    close_cent = nx.closeness_centrality(nx_random_sbm)
+    between_cent = nx.betweenness_centrality(nx_random_sbm)
+    load_cent = nx.load_centrality(nx_random_sbm)
+    sbm_graphs_meta.append({
+                        'graph': f'sbm_torch_{ith_graph}_{num_blocks}_{num_channels}',
+                        'num_nodes': sbm_torch.num_nodes,
+                        'num_edges': sbm_torch.num_edges,
+                        'node_features': num_channels,
+                        'num_classes': sbm_torch.num_classes,
+                        # 'diameter': diameter,
+                        'degree_cent': mean(degree_cent[k] for k in degree_cent),
+                        'close_cent': mean(close_cent[k] for k in close_cent),
+                        'between_cent': mean(between_cent[k] for k in between_cent),
+                        'load_cent': mean(load_cent[k] for k in load_cent),
+                        'all_degree_cent': degree_cent,
+                        'all_close_cent':  close_cent,
+                        'all_between_cent': between_cent,
+                        'all_load_cent': load_cent,
+                        # 'eccentric': mean(eccentric[k] for k in eccentric),
+                        })
+
+    plt.savefig(f'./sbm_nx_plots/sbm_torch_{ith_graph}_{num_blocks}_{num_channels}.png', format='png')
+    plt.clf()
+
+with open('./sbm_graphs_meta.json', 'w') as fp:
+    json.dump(sbm_graphs_meta, fp)
 #
 # graph = torch.load('random_sbm')
 # graph = dir(graph)
 # for attr in graph:
 #     print(attr)
-
 
 ###################################################################################333
 ## setup combinations of parameters for generating RandomPartitionGraph
@@ -141,13 +179,13 @@ for ind, param_comb in enumerate(param_combs):
                                              average_degree=avg_degree, num_channels=num_channels, is_undirected=True)
 
     random_partition_sbm = random_partition_sbm[0]
-    # torch.save(random_partition_sbm, f'../random_graphs/rp_sbm/rpsbm_torch_{ind}')
+    torch.save(random_partition_sbm, f'../random_graphs/rp_sbm/rpsbm_torch_{ind}')
 
-    # num_of_nodes = random_partition_sbm.x.size(0)
-    # plot_in_out_degree_distributions(random_partition_sbm.edge_index, num_of_nodes,
-    #                                  f'rpsbm_torch_{ind}')
-    # plot_igraph(random_partition_sbm, dataset_name=f'rpsbm_torch_{ind}')
-    # class_colors = {0: 'red', 1: 'blue', 2: 'green', 3: 'brown', 4: 'orange', 5: 'gray', 6: 'purple', 7: 'pink', 8: 'olive', 9: 'cyan'}
+    num_of_nodes = random_partition_sbm.x.size(0)
+    plot_in_out_degree_distributions(random_partition_sbm.edge_index, num_of_nodes,
+                                     f'rpsbm_torch_{ind}')
+    plot_igraph(random_partition_sbm, dataset_name=f'rpsbm_torch_{ind}')
+    class_colors = {0: 'red', 1: 'blue', 2: 'green', 3: 'brown', 4: 'orange', 5: 'gray', 6: 'purple', 7: 'pink', 8: 'olive', 9: 'cyan'}
 
     nx_random_sbm = to_networkx(random_partition_sbm, node_attrs=['x', 'y'], to_undirected=False)
 
@@ -159,11 +197,11 @@ for ind, param_comb in enumerate(param_combs):
     # eccentric = dict(nx.eccentricity(nx_random_sbm))
     # diameter = nx.diameter(nx_random_sbm)
 
-    # node_colors = [class_colors[data['y']] for _, data in nx_random_sbm.nodes(data=True)]
-    # nx.draw(nx_random_sbm, node_color=node_colors, with_labels=True, edge_color='gray')
-    #
-    # plt.savefig(f'./nx_graph_plots/rpsbm_torch_{ind}.png', format='png')
-    # plt.clf()
+    node_colors = [class_colors[data['y']] for _, data in nx_random_sbm.nodes(data=True)]
+    nx.draw(nx_random_sbm, node_color=node_colors, with_labels=True, edge_color='gray')
+
+    plt.savefig(f'./nx_graph_plots/rpsbm_torch_{ind}.png', format='png')
+    plt.clf()
 
     rp_sbm_dict.append({'graph': f'rpsbm_torch_{ind}',
                         'num_nodes': random_partition_sbm.num_nodes,

@@ -26,7 +26,6 @@ import torch_geometric.transforms as T
 # data = dataset[0]
 
 
-node2vec_meta = []
 for graph in tqdm(os.listdir("../random_graphs/rp_sbm")):
 
     run(["python3", "node2vec.py",

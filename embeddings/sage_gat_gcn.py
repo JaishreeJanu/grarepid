@@ -14,7 +14,7 @@ from torch_geometric.datasets import Planetoid, Amazon, CitationFull, TUDataset,
 import torch_geometric.transforms as T
 import matplotlib.pyplot as plt
 from torch_geometric.utils import to_networkx
-
+import igraph as ig
 from torch_geometric.loader import NeighborLoader, DataLoader
 
 from torch_geometric.utils import degree
@@ -218,7 +218,7 @@ def plot_degree(data, graph):
   plt.bar(numbers.keys(),
           numbers.values(),
           color='#0A047A')
-  plt.savefig(f'./rpsbm_degrees/{graph}')
+  plt.savefig(f'./sbm_degrees/{graph}')
   plt.clf()
 
 def plot_subgraphs(train_loader, graph):
@@ -237,5 +237,66 @@ def plot_subgraphs(train_loader, graph):
                         cmap="cool",
                         font_size=10
                         )
-    plt.savefig(f'./rpsbm_subgraphs/{graph}.png')
+    plt.savefig(f'./sbm_subgraphs/{graph}.png')
     plt.clf()
+
+def convert_to_networkx(graph, n_sample=None):
+
+    g = to_networkx(graph, node_attrs=["x"])
+    y = graph.y.numpy()
+
+    # if n_sample is not None:
+    #     sampled_nodes = random.sample(g.nodes, n_sample)
+    #     g = g.subgraph(sampled_nodes)
+    #     y = y[sampled_nodes]
+
+    return g, y
+def visualize_classification_result(model, graph, dataset_name, type):
+
+    model.eval()
+    _, out_logits = model(graph.x, graph.edge_index)
+    pred = torch.argmax(out_logits, dim=1)
+    corrects = (pred[graph.test_mask] == graph.y[graph.test_mask]).numpy().astype(int)
+    test_index = np.arange(len(graph.x))[graph.test_mask.numpy()]
+    g, y = convert_to_networkx(graph)
+    g_test = g.subgraph(test_index)
+
+    print("yellow node: correct \npurple node: wrong")
+
+    plt.figure(figsize=(9, 7))
+    nx.draw_spring(g_test, node_size=30, arrows=False, node_color=corrects)
+    plt.savefig(f'./sbm_test_node_classifications_plots/{type}_{dataset_name}.png')
+
+def plot_classification_results_igraph(model, data, dataset_name, type):
+    G = ig.Graph(data.x.size(0), data.edge_index.t().tolist())
+    model.eval()
+    _, out_logits = model(data.x, data.edge_index)
+    predicted_labels = torch.argmax(out_logits, dim=1)
+
+    true_labels = data.y.tolist()
+    vertex_colors = []
+    correct_classi_nodes = []
+    incorrect_classi_nodes = []
+    # Determine the color for each node based on correctness of classification
+    for i in range(data.x.size(0)):
+        if true_labels[i] == predicted_labels[i]:
+            correct_classi_nodes.append(i)
+            vertex_colors.append('green')  # Correct classification
+        else:
+            incorrect_classi_nodes.append(i)
+            vertex_colors.append('red')  # Incorrect classification
+
+    # Define visual style for the graph
+    visual_style = {
+        "vertex_color": vertex_colors,
+        "vertex_label": G.vs.indices,
+        "bbox": (600, 600),
+        "margin": 20,
+        "vertex_size": 30,
+    }
+
+    # Plot the graph
+    out = ig.plot(G, **visual_style)
+    out.save(f"./sbm_node_classfication_ig/{type}_{dataset_name}.png")
+
+    return incorrect_classi_nodes, correct_classi_nodes, predicted_labels, true_labels

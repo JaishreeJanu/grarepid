@@ -89,10 +89,10 @@ split = T.RandomLinkSplit(
     neg_sampling_ratio=1.0,
 )
 
-with open('./rpsbm_link_pred_results.json', 'r') as fp:
+with open('./sbm_link_pred_results.json', 'r') as fp:
     link_prediction_results = json.load(fp)
 
-data = torch.load(f"../random_graphs/rp_sbm/{graph}")
+data = torch.load(f"../random_graphs/{graph}")
 
 train_data, val_data, test_data = split(data)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -110,5 +110,5 @@ link_prediction_results.append({
     'link_pred_test_auc': test_auc
 })
 
-with open('./rpsbm_link_pred_results.json', 'w') as fp:
+with open('./sbm_link_pred_results.json', 'w') as fp:
     json.dump(link_prediction_results, fp)

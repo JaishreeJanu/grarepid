@@ -3,7 +3,7 @@ from tqdm import tqdm
 import os
 
 
-for graph in tqdm(os.listdir("../random_graphs/rp_sbm/")):
-    run(["python3", "link_prediction.py",
+for graph in tqdm(os.listdir("../random_graphs/")):
+    run(["python3", "anomaly_detection.py",
          "--graph", graph,
          ])

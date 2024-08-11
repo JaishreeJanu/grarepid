@@ -78,11 +78,8 @@ def test():
 
 for epoch in range(1, 101):
     loss = train()
-    try:
-        acc = test()
-    except:
-        pass
-    print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}, Acc: {acc:.4f}')
+    #acc = test()
+    print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}')
 
 
 @torch.no_grad()
@@ -100,20 +97,12 @@ def plot_points(colors, graph):
     plt.savefig(f'node2vec_rp_sbm_plots/{graph}.png')
 
 
-colors = [
-    '#ffc0cb', '#bada55', '#008080', '#420420', '#7fe5f0', '#065535', '#ffd700'
-]
-plot_points(colors, graph)
+# colors = [
+#     '#ffc0cb', '#bada55', '#008080', '#420420', '#7fe5f0', '#065535', '#ffd700'
+# ]
+# plot_points(colors, graph)
 
-with open('./rp_sbm_node2vec_classif_accurac.json', 'r') as fp:
-    node2vec_meta = json.load(fp)
-node2vec_meta.append({
-        'graph': graph,
-        'node2vec_acc': f'{acc:.4f}',
-        'final_train_loss':  loss,
-    })
-with open('./rp_sbm_node2vec_classif_accurac.json', 'w') as fp:
-    json.dump(node2vec_meta, fp)
+
 all_vectors = ""
 for tensor in model(torch.arange(data.num_nodes, device=device)):
     s = "\t".join([str(value) for value in tensor.detach().cpu().numpy()])
