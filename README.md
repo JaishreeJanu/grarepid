@@ -16,7 +16,7 @@
       Graph = dataset[0] ```
 
 \
--- Execute NC-LID algorithm from ./nclid/nclideval.py script. Execute grarepid/id4geol/intrinsic_dimension_k_hops.py script for the GEOL algorithm. \
+-- Execute NC-LID algorithm from ./nclid/nclideval.py script. <br> Execute grarepid/id4geol/intrinsic_dimension_k_hops.py script for the GEOL algorithm. \
 -- Execute ./embeddings/driver_sage_gat_gcn.py script to obtain graph’s node embeddings and node classification results from graphSAGE, GAT and GCN algorithms. \
 -- Execute ./embeddings/driver_node2vec.py script to obtain node embeddings from Node2vec algorithm. \
 -- Execute ./downstream_tasks/link_prediction.py and downstream_tasks/anomaly_detection.py to obtain results for Graph Machine Learning applications. 
@@ -33,9 +33,9 @@
 
  ![alt text](results/plots_sbm/Correlation:_Graph_Metrics_vs_Node_Classification_Metrics.png) 
 
- ![alt text](results/plots_sbm/Scatter_anomaly_avg_precision_score_anomaly_prediction_ _vs_ _dim_graph_geol.png) 
+ ![alt text](./results/plots_sbm/Scatter_anomaly_avg_precision_score_anomaly_prediction__vs__dim_graph_geol.png) 
 
- ![alt text](results/plots_sbm/Scatter_close_cent_graph_metrics_ _vs_ _mind_ml_sage_embeddings.png) 
+ ![alt text](./results/plots_sbm/Scatter_close_cent_graph_metrics__vs__mind_ml_sage_embeddings.png) 
 
 
 
