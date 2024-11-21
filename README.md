@@ -10,11 +10,11 @@
  ``` python3 -m venv <myenvname> ``` 
 
 <br>
-2. Install all the dependencies listed in ```requirements.txt``` file. <br>
+2. Install all the dependencies listed in `requirements.txt` file. <br>
 3.   Load torch datasets correctly,
-      ``` graph = torch.load('../random_graphs/sbm_torch_5_7_7') ``` <br>
-      ``` dataset = Planetoid(root='../real_graphs/planetoid/', name=’Cora’)  
-      Graph = dataset[0] ```
+      Synthetic graph: `graph = torch.load('../random_graphs/sbm_torch_5_7_7')` <br>
+      Real graph: `dataset = Planetoid(root='../real_graphs/planetoid/', name=’Cora’)` <br>  
+      `Graph = dataset[0]`
 
 \
 4. Execute NC-LID algorithm from ```./nclid/nclideval.py``` script. <br> Execute ```./id4geol/intrinsic_dimension_k_hops.py``` script for the GEOL algorithm. \
