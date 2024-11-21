@@ -1,4 +1,9 @@
-# grarepid
+# grarepid (Intrinsic Dimensionality and Graph Representations)
+
+This work is done as a part of my University Masters' Data Analytics Thesis Coursework
+
+## Abstract
+There has been continuous research on finding the Intrinsic Dimensionality (ID) of graphs and also on developing advanced algorithms for graph representations. We know that graph representations are exceptionally good at preserving the original structures. But what about their innate behaviors? How does innate structure of graphs change when transformed into embeddings? Do graph IDs impact the performance of downstream tasks? How do graph’s various node measures correlate to graph representations? These questions are largely unexplored. With this motivation, the thesis lays the groundwork in a new direction. This work has contributed towards synthetic graph generation for the thorough study of underlying behaviors. Further, the analysis of experiments shows that graph IDs indeed impact the evaluation metrics of various downstream tasks which are performed on the graph representations. We also have some interesting results on how distinctly graph representations obtained from different Graph Neural Networks perform on the downstream tasks.
 
 ***
 
