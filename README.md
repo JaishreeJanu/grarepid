@@ -10,10 +10,10 @@
  ``` python3 -m venv <myenvname> ``` 
 
 <br>
-2. Install all the dependencies listed in ` requirements.txt ` file. <br>
-3.   Load torch datasets correctly,
-      Synthetic graph: ``` graph = torch.load('../random_graphs/sbm_torch_5_7_7') ``` <br>
-      Real graph: ``` dataset = Planetoid(root='../real_graphs/planetoid/', name=’Cora’) ``` <br>  
+2. Install all the dependencies listed in ` requirements.txt ` file.\
+3.   Load torch datasets,\
+      Synthetic graph: ``` graph = torch.load('../random_graphs/sbm_torch_5_7_7') ``` \
+      Real graph: ``` dataset = Planetoid(root='../real_graphs/planetoid/', name=’Cora’) ``` \  
       ``` Graph = dataset[0] ```
 
 \
